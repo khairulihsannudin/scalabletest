@@ -1,5 +1,5 @@
 export const getMessages = async () => {
-    const res = await fetch(`${process.env.API_URL}/messages`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/messages`, {
         method: "GET",
     });
     const data = await res.json();
@@ -7,7 +7,7 @@ export const getMessages = async () => {
     };
 
 export const postMessage = async (name: string, messages: string) => {
-    const res = await fetch(`${process.env.API_URL}/messages`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/messages`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
