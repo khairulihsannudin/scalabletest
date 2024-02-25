@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Image from "next/image";
 import { getMessages, postMessage } from "./lib/fetch";
 import { useEffect, useState } from "react";
@@ -10,25 +10,29 @@ interface Message {
 
 export default function Home() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    if(data.length === 0) {
+    if (data.length === 0) {
       getMessages()
-      .then((res) => setData(res))
-      .catch((err) => console.error(err));
-    };
-    console.log(data)
-  }
-  , [data]);
+        .then((res) => {setData(res)})
+        .catch((err) => console.error(err));
+    }
+    console.log(data);
+  }, [data]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     const name = (e.currentTarget.elements[0] as HTMLInputElement).value;
     const messages = (e.currentTarget.elements[1] as HTMLInputElement).value;
     // console.log(JSON.stringify({name, message}));
     const res = await postMessage(name, messages);
-    console.log(res);
+    setLoading(false);
+    window.location.reload();
   };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col overflow-x-hidden items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
           <a
@@ -52,7 +56,7 @@ export default function Home() {
 
       <form
         action="POST"
-        className="relative flex flex-col items-center gap-2 w-screen justify-center"
+        className="relative flex flex-col items-center gap-2 w-screen justify-center min-h-[80vh]"
         onSubmit={handleSubmit}
       >
         <label className="input input-bordered input-primary w-full max-w-xs flex items-center gap-2">
@@ -66,11 +70,20 @@ export default function Home() {
           </svg>
           <input type="text" className="grow" placeholder="Name" />
         </label>
-        <textarea className="textarea textarea-primary textarea-bordered textarea-md w-full max-w-xs" placeholder="Message for me"></textarea>
-        <button type='submit' className="btn btn-neutral btn-xs sm:btn-sm md:btn-md" >Submit</button>
+        <textarea
+          className="textarea textarea-primary textarea-bordered textarea-md w-full max-w-xs"
+          placeholder="Message for me"
+        ></textarea>
+        <button
+          disabled={loading}
+          type="submit"
+          className="btn btn-neutral btn-xs sm:btn-sm md:btn-md"
+        >
+          {loading ? "Loading" : "Submit"}
+        </button>
       </form>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
+      <div className="mb-32 grid text-center m-auto lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
         {data.map(
           (message: Message) =>
             message.messages &&
