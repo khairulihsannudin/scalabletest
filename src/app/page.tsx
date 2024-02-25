@@ -15,7 +15,9 @@ export default function Home() {
   useEffect(() => {
     if (data.length === 0) {
       getMessages()
-        .then((res) => {setData(res)})
+        .then((res) => {
+          setData(res);
+        })
         .catch((err) => console.error(err));
     }
     console.log(data);
@@ -59,7 +61,7 @@ export default function Home() {
         className="relative flex flex-col items-center gap-2 w-screen justify-center min-h-[80vh]"
         onSubmit={handleSubmit}
       >
-        <label className="input input-bordered input-primary w-full max-w-xs flex items-center gap-2">
+        <label className="input input-bordered input-primary w-full max-w-md flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -68,16 +70,17 @@ export default function Home() {
           >
             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
           </svg>
-          <input type="text" className="grow" placeholder="Name" />
+          <input required type="text"  className="grow" placeholder="Name" />
         </label>
         <textarea
-          className="textarea textarea-primary textarea-bordered textarea-md w-full max-w-xs"
+        required
+          className="textarea textarea-primary textarea-bordered textarea-md w-full max-w-md"
           placeholder="Message for me"
         ></textarea>
         <button
           disabled={loading}
           type="submit"
-          className="btn btn-neutral btn-xs sm:btn-sm md:btn-md"
+          className="btn btn-neutral btn-wide btn-xs sm:btn-sm md:btn-md"
         >
           {loading ? "Loading" : "Submit"}
         </button>
